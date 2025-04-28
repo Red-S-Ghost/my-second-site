@@ -19,18 +19,20 @@
 				<p>Простий шаблон, щоб повідомити світові, коли ви запустите свій наступний великий проект.</p>
 			</header>
 
-	<!-- Signup Form -->
+<!-- Signup Form -->
 <form id="signup-form" method="POST" action="https://formsubmit.co/vsawagv@gmail.com">
-    <!-- Отключить CAPTCHA -->
     <input type="hidden" name="_captcha" value="false">
-    <!-- Опционально: настроить редирект после отправки -->
-    <input type="hidden" name="_next" value="https://yourwebsite.com/thankyou.html">
     
-    <input type="email" name="email" id="email" placeholder="Пошта" required />
-    <input type="submit" value="Надіслати" class="primary" />
+    <div class="fields">
+        <div class="field">
+            <input type="email" name="email" id="email" placeholder="Пошта" required />
+        </div>
+    </div>
+    
+    <ul class="actions">
+        <li><input type="submit" value="Надіслати" class="primary" /></li>
+    </ul>
 </form>
-
-
 
 		<!-- Footer -->
 			<footer id="footer">
