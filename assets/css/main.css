@@ -779,14 +779,11 @@ button,
 /* Header */
 #header h1 {
   font-size: 3.25em;
-  margin: 0 0 1em 0; /* Устанавливаем margin-bottom в 1em */
-}
+  margin: 0 0 0.55em 0; }
 
 #header p {
   font-size: 1.35em;
-  line-height: 1.65em;
-  margin: 0 0 1em 0; /* Переопределяем margin-bottom для #header p */
-}
+  line-height: 1.65em; }
 
 #header a {
   color: inherit; }
