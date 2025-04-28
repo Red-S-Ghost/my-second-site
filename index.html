@@ -4,55 +4,63 @@
 -->
 <html>
 	<head>
-	
 		<title>Незабаром</title>
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		
-
+		<style>
+			/* Добавляем стили для одинаковых отступов */
+			#header h1, #header p, #signup-form {
+				margin: 1.5em 0;
+			}
+			#signup-form {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 1.5em; /* Отступ между полем ввода и кнопкой */
+			}
+			#email {
+				height: 2.75em;
+				padding: 0 1em;
+				border-radius: 6px;
+				border: 1px solid #ccc;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
-
-
 		<!-- Header -->
-			<header id="header">
-				<center>
-
+		<header id="header">
+			<center>
 				<h1>Незабаром</h1>
 				<p>Простий шаблон, щоб повідомити світові, коли ви запустите свій наступний великий проект.</p>
-					</center>
-
-			</header>
+			</center>
+		</header>
 
 		<!-- Signup Form -->
-	
+		<form id="signup-form" method="post" action="https://formsubmit.co/vsawagv@gmail.com">
+			<input type="hidden" name="_captcha" value="false">
+			<input type="email" name="email" id="email" placeholder="Пошта" />
+			<input 
+				type="submit" 
+				value="Підписатися"
+				style="padding-left: 1.5em; padding-right: 1.5em; height: 2.75em; background-color: #1cb495; color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer;"
+			/>
+		</form>
 
-	<form id="signup-form" method="post" action="https://formsubmit.co/vsawagv@gmail.com" style="display: flex; justify-content: center; align-items: center; width: 100%; text-align: center;">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="email" name="email" id="email" placeholder="Пошта" />
-  <input 
-    type="submit" 
-    value="Підписатися"
-    style="padding-left: 1.5em; padding-right: 1.5em; height: 2.75em; background-color: #1cb495; color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer;"
-  />
-</form>
-
-	<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-									<li><a href="https://t.me/OleksandrSerhiiovych" class="icon brands fa-telegram-plane"><span class="label">Telegram</span></a></li>
-									<li><a href="https://facebook.com/vsawagv/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="https://instagram.com/w_alex_vv/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-								</ul>
-				<ul class="copyright">
-					<li> </li><li> </li>
-				</ul>
-			</footer>
+		<!-- Footer -->
+		<footer id="footer">
+			<ul class="icons">
+				<li><a href="https://t.me/OleksandrSerhiiovych" class="icon brands fa-telegram-plane"><span class="label">Telegram</span></a></li>
+				<li><a href="https://facebook.com/vsawagv/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+				<li><a href="https://instagram.com/w_alex_vv/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li> </li><li> </li>
+			</ul>
+		</footer>
 
 		<!-- Scripts -->
-			<script src="assets/js/main.js"></script>
-
+		<script src="assets/js/main.js"></script>
 	</body>
 </html>
