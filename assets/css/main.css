@@ -851,7 +851,7 @@ button,
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
-      gap: 1.25em; }
+      gap: 1.5em; }
       #signup-form input[type="text"],
       #signup-form input[type="password"],
       #signup-form input[type="email"] {
