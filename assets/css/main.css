@@ -851,20 +851,23 @@ button,
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
-      gap: 1.5em; }
-      #signup-form input[type="text"],
-      #signup-form input[type="password"],
-      #signup-form input[type="email"] {
-        width: 100%; }
-      #signup-form .message {
-        bottom: -1.5em;
-        font-size: 0.9em;
-        height: 1em;
-        left: 0;
-        line-height: inherit;
-        position: absolute;
-        font-family: "Playpen Sans", sans-serif;
-      } }
+    }
+    #signup-form input[type="text"],
+    #signup-form input[type="password"],
+    #signup-form input[type="email"] {
+      width: 100%;
+      margin-bottom: 1.5em; /* Отступ снизу для поля */
+    }
+    #signup-form .message {
+      bottom: -1.5em;
+      font-size: 0.9em;
+      height: 1em;
+      left: 0;
+      line-height: inherit;
+      position: absolute;
+      font-family: "Playpen Sans", sans-serif;
+    }
+  }
 
 /* Footer */
 #footer {
