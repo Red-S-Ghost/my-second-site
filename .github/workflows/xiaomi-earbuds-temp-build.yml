@@ -48,6 +48,7 @@ jobs:
         run: |
           Set-Location $env:PROJECT_DIR
           npm ci
+          npm install @tauri-apps/api@2.12.0 --save-exact
 
       - name: Regenerate all Tauri icons from exact U+1F3A7
         shell: pwsh
@@ -69,6 +70,8 @@ jobs:
           Copy-Item -LiteralPath $exe -Destination (Join-Path $env:GITHUB_WORKSPACE "out\Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe")
           Copy-Item -LiteralPath (Join-Path $env:PROJECT_DIR "src-tauri\icons\icon.ico") -Destination (Join-Path $env:GITHUB_WORKSPACE "out\headphones_u1f3a7.ico")
           Copy-Item -LiteralPath (Join-Path $env:PROJECT_DIR "src-tauri\icons\32x32.png") -Destination (Join-Path $env:GITHUB_WORKSPACE "out\headphones_u1f3a7_32.png")
+          Copy-Item -LiteralPath (Join-Path $env:PROJECT_DIR "package.json") -Destination (Join-Path $env:GITHUB_WORKSPACE "out\package.json")
+          Copy-Item -LiteralPath (Join-Path $env:PROJECT_DIR "package-lock.json") -Destination (Join-Path $env:GITHUB_WORKSPACE "out\package-lock.json")
           Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $env:GITHUB_WORKSPACE "out\Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe")
 
       - name: Smoke test process
@@ -88,6 +91,8 @@ jobs:
             out/Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe
             out/headphones_u1f3a7.ico
             out/headphones_u1f3a7_32.png
+            out/package.json
+            out/package-lock.json
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
