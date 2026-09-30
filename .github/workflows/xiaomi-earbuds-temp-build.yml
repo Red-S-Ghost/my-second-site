@@ -1,0 +1,93 @@
+name: Temporary Xiaomi Earbuds headphones icon build
+
+on:
+  push:
+    branches:
+      - chatgpt-temp-xiaomi-earbuds-build
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 35
+    env:
+      SOURCE_URL: 'https://sdmntprdenmarkeast.oaiusercontent.com/files/00000000-6ddc-8210-b48b-ec65dac999ef/raw?se=2026-09-30T08%3A36%3A01Z&sp=r&sv=2026-02-06&sr=b&scid=b03c3507-d1fc-5942-9e47-30678eaad0a8&skoid=76024c37-11e2-4c92-aa07-7e519fbe2d0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-30T04%3A16%3A56Z&ske=2026-10-01T04%3A16%3A56Z&sks=b&skv=2026-02-06&sig=h/e%2BvHf1R4/DF0ftgVhW7MGdqmFqnc6qlfQWpAfsyNQ%3D'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Download exact source ZIP
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Invoke-WebRequest -Uri $env:SOURCE_URL -OutFile source.zip
+          Expand-Archive -LiteralPath source.zip -DestinationPath source
+          $project = (Get-ChildItem -LiteralPath source -Directory | Select-Object -First 1).FullName
+          if (-not $project) { throw "Project folder not found" }
+          "PROJECT_DIR=$project" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Verify source and exact emoji icon
+        shell: pwsh
+        run: |
+          $pkg = Get-Content (Join-Path $env:PROJECT_DIR "package.json") -Raw | ConvertFrom-Json
+          if ($pkg.version -ne "0.0.2-buds6pro12-headphones") { throw "Unexpected version: $($pkg.version)" }
+          $icon = Join-Path $env:PROJECT_DIR "src-tauri\icons\headphones_u1f3a7.png"
+          if (-not (Test-Path -LiteralPath $icon)) { throw "Exact U+1F3A7 source icon missing" }
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $icon).Hash
+          Write-Host "Exact headphones source icon SHA256: $hash"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          Set-Location $env:PROJECT_DIR
+          npm ci
+
+      - name: Regenerate all Tauri icons from exact U+1F3A7
+        shell: pwsh
+        run: |
+          Set-Location $env:PROJECT_DIR
+          npx tauri icon "src-tauri/icons/headphones_u1f3a7.png"
+          Get-Item "src-tauri/icons/icon.ico" | Format-List Name,Length
+
+      - name: Build Windows x64 portable EXE from source
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Set-Location $env:PROJECT_DIR
+          npm run build
+          npx tauri build --no-bundle
+          $exe = Join-Path $env:PROJECT_DIR "src-tauri\target\release\app.exe"
+          if (-not (Test-Path -LiteralPath $exe)) { throw "EXE not found" }
+          New-Item -ItemType Directory -Force -Path (Join-Path $env:GITHUB_WORKSPACE "out") | Out-Null
+          Copy-Item -LiteralPath $exe -Destination (Join-Path $env:GITHUB_WORKSPACE "out\Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe")
+          Copy-Item -LiteralPath (Join-Path $env:PROJECT_DIR "src-tauri\icons\icon.ico") -Destination (Join-Path $env:GITHUB_WORKSPACE "out\headphones_u1f3a7.ico")
+          Copy-Item -LiteralPath (Join-Path $env:PROJECT_DIR "src-tauri\icons\32x32.png") -Destination (Join-Path $env:GITHUB_WORKSPACE "out\headphones_u1f3a7_32.png")
+          Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $env:GITHUB_WORKSPACE "out\Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe")
+
+      - name: Smoke test process
+        shell: pwsh
+        run: |
+          $exe = Join-Path $env:GITHUB_WORKSPACE "out\Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe"
+          $p = Start-Process -FilePath $exe -ArgumentList "--autostart" -PassThru
+          Start-Sleep -Seconds 5
+          $p.Refresh()
+          if ($p.HasExited) { throw "Autostart instance exited unexpectedly" }
+          Stop-Process -Id $p.Id -Force
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Xiaomi_Earbuds_0.0.2-buds6pro12_headphones
+          path: |
+            out/Xiaomi_Earbuds_0.0.2-buds6pro12_headphones_portable.exe
+            out/headphones_u1f3a7.ico
+            out/headphones_u1f3a7_32.png
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
